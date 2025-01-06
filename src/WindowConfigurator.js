@@ -19,9 +19,72 @@ const WindowConfigurator = () => {
   const [total, setTotal] = useState(null);
 
   const handleSubmit = (event) => {
+
+    //LEGNAME
+    const widthListellareFront = (width + 10) / 1000;
+    const heightListellareFront = (height + 10) / 1000;
+
+    const widthListellareLat = depthTop / 1000;
+    const heightListellareLat = height / 1000;
+
+    const widthListellareSup = width / 1000;
+    const heightListellareSup = depthTop / 1000;
+
+    const widthListellareInf = width / 1000;
+    const heightListellareInf = depthBottom / 1000;
+
+    //ISOLAZIONE
+    const widthInsulationFront = (width - 2 * panelThickness) / 1000;
+    const heightInsulationFront = (height - 2 * panelThickness) / 1000;
+
+    const widthInsulationLat = depthBottom;
+    const heightInsulationLat = height;
+
+    const widthInsulationBottom = (width - 2 * panelThickness) / 1000;
+    const heightInsulationBottom = (depthBottom - 2 * panelThickness) / 1000;
+
+    const widthInsulationTop = (width - 2 * panelThickness) / 1000;
+    const heightInsulationTop = (depthTop - 2 * panelThickness) / 1000;
+
+    //SPAZZOLA INTERNA
+    const widthBrushInternal = width / 1000;
+    const heightBrushInternal = internalBrushDepth / 1000;
+
+   //PREZZI DEFAULT 
+   const LARICE_M2 = 35.78;
+
+   const INSULATION_10 = 7.92;
+   const INSULATION_20 = 12.60;
+   const INSULATION_30 = 19.60;
+
+   const BRUSH_INTERNAL = 3.07;
+
+   const woodPrice = LARICE_M2 * 1.45;
+   const insulationPrice = INSULATION_10 * 1.45;
+   const brushPrice = 3.07 * 1.45;
+
+   //LEGNAME
+   var totM2= widthListellareFront * heightListellareFront + 2 * widthListellareLat * heightListellareLat + widthListellareSup * heightListellareSup + widthListellareInf * heightListellareInf;
+   //sfrido
+   totM2 = totM2 * 1.05;
+   const calcWoodPrice = woodPrice * totM2
+
+   //ISOLANTE
+   var calcInsulationPrice = 0;
+   if(insulationThickness > 0){
+      var insulationTotM2 = widthInsulationFront * heightInsulationFront + 2 * widthInsulationLat * heightInsulationLat + widthInsulationBottom * heightInsulationBottom + widthInsulationTop * heightInsulationTop;
+      insulationTotM2 = insulationTotM2 * 1.05;
+      var calcInsulationPrice = insulationPrice * insulationTotM2;
+   }
+
+   //SPAZZOLA INTERNA
+   var calcBrushPrice = 0;
+   var brushTotM = widthBrushInternal * 1.05;
+   if(internalBrush)
+    var calcBrushPrice = brushTotM * brushPrice;
+
     event.preventDefault();
-    const calculatedTotal = width ? width * 5 : 0;
-    setTotal(calculatedTotal);
+    setTotal(calcWoodPrice + calcInsulationPrice + calcBrushPrice);
   };
 
   return (
@@ -117,6 +180,7 @@ const WindowConfigurator = () => {
             value={insulationThickness}
             onChange={(e) => setInsulationThickness(Number(e.target.value))}
           >
+            <option value={0}>0</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
             <option value={30}>30</option>
