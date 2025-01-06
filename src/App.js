@@ -5,9 +5,7 @@ import "./App.css"; // Per gli stili
 function App() {
   return (
     <div style={{ textAlign: "center", padding: "20px" }}>
-      <header>
-        <h1>Window Configurator</h1>
-      </header>
+     
       <WindowConfigurator />
       {/* Aggiungere il footer */}
       <footer style={{ marginTop: "20px" }}>
