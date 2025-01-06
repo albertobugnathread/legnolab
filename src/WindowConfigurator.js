@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 
 const WindowConfigurator = () => {
-  const [color, setColor] = useState("white");
-  const [height, setHeight] = useState("");
+  const [essence, setEssence] = useState("ABETE");
   const [width, setWidth] = useState("");
-
-  const handleColorChange = (event) => {
-    setColor(event.target.value);
-  };
-
-  const handleHeightChange = (event) => {
-    setHeight(event.target.value);
-  };
-
-  const handleWidthChange = (event) => {
-    setWidth(event.target.value);
-  };
+  const [height, setHeight] = useState("");
+  const [depthTop, setDepthTop] = useState(75);
+  const [depthBottom, setDepthBottom] = useState("");
+  const [panelThickness] = useState(19); // Valore fisso
+  const [insulationThickness, setInsulationThickness] = useState(10);
+  const [acousticKit, setAcousticKit] = useState(false);
+  const [acousticKitThickness] = useState(4); // Valore fisso
+  const [internalBrush, setInternalBrush] = useState(false);
+  const [internalBrushDepth] = useState(20); // Valore fisso
+  const [externalBrush, setExternalBrush] = useState(false);
+  const [externalBrushModel, setExternalBrushModel] = useState("modello1");
+  const [paintingType, setPaintingType] = useState("Aggrappante");
+  const [beltGuide, setBeltGuide] = useState("nessuno");
+  const [total, setTotal] = useState(null);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(
-      `Configurazione completata:\nColore infissi: ${color}\nAltezza: ${height} cm\nLarghezza: ${width} cm`
-    );
+    const calculatedTotal = width ? width * 5 : 0;
+    setTotal(calculatedTotal);
   };
 
   return (
@@ -36,49 +36,206 @@ const WindowConfigurator = () => {
       }}
     >
       <form onSubmit={handleSubmit}>
+        {/* Essenza */}
         <div style={{ marginBottom: "15px" }}>
           <label>
-            <strong>Colore degli infissi:</strong>
+            <strong>Essenza del cassonetto:</strong>
           </label>
-          <div>
-            <select value={color} onChange={handleColorChange}>
-              <option value="white">Bianco</option>
-              <option value="brown">Marrone</option>
-              <option value="red">Rosso</option>
+          <select value={essence} onChange={(e) => setEssence(e.target.value)}>
+            <option value="ABETE">ABETE</option>
+            <option value="LARICE">LARICE</option>
+            <option value="ROVERE">ROVERE</option>
+            <option value="FRASSINO">FRASSINO</option>
+          </select>
+        </div>
+
+        {/* Larghezza */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Larghezza cassonetto esterno (mm):</strong>
+          </label>
+          <input
+            type="number"
+            value={width}
+            onChange={(e) => setWidth(Number(e.target.value))}
+            required
+          />
+        </div>
+
+        {/* Altezza */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Altezza cassonetto esterno (mm):</strong>
+          </label>
+          <input
+            type="number"
+            value={height}
+            onChange={(e) => setHeight(Number(e.target.value))}
+            required
+          />
+        </div>
+
+        {/* Profondità superiore */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Profondità cassonetto superiore (mm):</strong>
+          </label>
+          <input
+            type="number"
+            value={depthTop}
+            onChange={(e) => setDepthTop(Math.max(75, Number(e.target.value)))}
+            required
+          />
+        </div>
+
+        {/* Profondità inferiore */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Profondità cassonetto inferiore (mm):</strong>
+          </label>
+          <input
+            type="number"
+            value={depthBottom}
+            onChange={(e) => setDepthBottom(Number(e.target.value))}
+            required
+          />
+        </div>
+
+        <div style={{ marginBottom: "15px" }}>
+            <label>
+              <strong>Spessore pannello listellare (mm):</strong>
+            </label>
+            <input type="number" value={panelThickness} readOnly />
+        </div>
+
+        {/* Spessore pannello isolante */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Spessore pannello isolante (mm):</strong>
+          </label>
+          <select
+            value={insulationThickness}
+            onChange={(e) => setInsulationThickness(Number(e.target.value))}
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={30}>30</option>
+          </select>
+        </div>
+
+        {/* Kit acustico */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Kit acustico presente:</strong>
+          </label>
+          <select
+            value={acousticKit}
+            onChange={(e) => setAcousticKit(e.target.value === "true")}
+          >
+            <option value="false">NO</option>
+            <option value="true">SI</option>
+          </select>
+        </div>
+
+        {acousticKit && (
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              <strong>Spessore kit acustico (mm):</strong>
+            </label>
+            <input type="number" value={acousticKitThickness} readOnly />
+          </div>
+        )}
+
+        {/* Spazzolina interna */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Spazzolina interna:</strong>
+          </label>
+          <select
+            value={internalBrush}
+            onChange={(e) => setInternalBrush(e.target.value === "true")}
+          >
+            <option value="false">NO</option>
+            <option value="true">SI</option>
+          </select>
+        </div>
+
+        {internalBrush && (
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              <strong>Profondità spazzolina interna (mm):</strong>
+            </label>
+            <input type="number" value={internalBrushDepth} readOnly />
+          </div>
+        )}
+
+        {/* Spazzolina esterna */}
+        <div style={{ marginBottom: "15px" }}>
+          <label>
+            <strong>Spazzolina esterna:</strong>
+          </label>
+          <select
+            value={externalBrush}
+            onChange={(e) => setExternalBrush(e.target.value === "true")}
+          >
+            <option value="false">NO</option>
+            <option value="true">SI</option>
+          </select>
+        </div>
+
+        {externalBrush && (
+          <div style={{ marginBottom: "15px" }}>
+            <label>
+              <strong>Modello spazzolina esterna:</strong>
+            </label>
+            <select
+              value={externalBrushModel}
+              onChange={(e) => setExternalBrushModel(e.target.value)}
+            >
+              <option value="modello1">Modello 1 (10mm)</option>
+              <option value="modello2">Modello 2 (20mm)</option>
             </select>
           </div>
-        </div>
+        )}
 
+        {/* Tipologia verniciatura */}
         <div style={{ marginBottom: "15px" }}>
           <label>
-            <strong>Altezza (cm):</strong>
+            <strong>Tipologia verniciatura:</strong>
           </label>
-          <div>
-            <input
-              type="number"
-              value={height}
-              onChange={handleHeightChange}
-              placeholder="Inserisci altezza"
-              style={{ padding: "5px", width: "100%" }}
-              required
-            />
-          </div>
+          <select
+            value={paintingType}
+            onChange={(e) => setPaintingType(e.target.value)}
+          >
+            <option value="Aggrappante">Aggrappante</option>
+            <option value="Mordenzato">Mordenzato</option>
+            <option value="RAL">RAL</option>
+          </select>
         </div>
 
+        {/* Guida cinghia */}
         <div style={{ marginBottom: "15px" }}>
           <label>
-            <strong>Larghezza (cm):</strong>
+            <strong>Guida cinghia:</strong>
           </label>
-          <div>
-            <input
-              type="number"
-              value={width}
-              onChange={handleWidthChange}
-              placeholder="Inserisci larghezza"
-              style={{ padding: "5px", width: "100%" }}
-              required
-            />
-          </div>
+          <select
+            value={beltGuide}
+            onChange={(e) => setBeltGuide(e.target.value)}
+          >
+            <option value="nessuno">Nessuno</option>
+            <option value="frontale-marrone">
+              Guidacinghia frontale plus marrone
+            </option>
+            <option value="inferiore-marrone">
+              Guidacinghia inferiore plus marrone
+            </option>
+            <option value="frontale-bianco">
+              Guidacinghia frontale plus bianco
+            </option>
+            <option value="inferiore-bianco">
+              Guidacinghia inferiore plus bianco
+            </option>
+          </select>
         </div>
 
         <button
@@ -95,6 +252,22 @@ const WindowConfigurator = () => {
           Configura
         </button>
       </form>
+
+      {total !== null && (
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "8px",
+            backgroundColor: "#e9f7e9",
+          }}
+        >
+          <strong>
+            TOTALE COMPLESSIVO (IVA ESCLUSA): €{total.toFixed(2)}
+          </strong>
+        </div>
+      )}
     </div>
   );
 };
