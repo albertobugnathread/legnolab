@@ -40,10 +40,10 @@ const WindowConfigurator = () => {
     const heightInsulationLat = height / 1000;
 
     const widthInsulationBottom = (width - 2 * panelThickness) / 1000;
-    const heightInsulationBottom = (depthBottom - 2 * panelThickness) / 1000;
+    const heightInsulationBottom = (depthBottom) / 1000;
 
     const widthInsulationTop = (width - 2 * panelThickness) / 1000;
-    const heightInsulationTop = (depthTop - 2 * panelThickness) / 1000;
+    const heightInsulationTop = (depthTop) / 1000;
 
     //KIT ACUSTICO
     const widthAcousticFront = (width - 2 * panelThickness) / 1000;
@@ -73,15 +73,15 @@ const WindowConfigurator = () => {
 
     //PREZZI DEFAULT 
     var priceWood = new Map();
-    priceWood.set("ABETE", 35.78);
-    priceWood.set("LARICE", 44.17);
-    priceWood.set("ROVERE", 40.77);
-    priceWood.set("FRASSINO", 31.15);
-    priceWood.set("HDF", 19.60);
+    priceWood.set("ABETE", 35.78 * 1.45);
+    priceWood.set("LARICE", 44.17 * 1.45);
+    priceWood.set("ROVERE", 40.77 * 1.45);
+    priceWood.set("FRASSINO", 31.15 * 1.45);
+    priceWood.set("HDF", 19.60 * 1.45);
 
     const INSULATION_10 = 7.92;
     const INSULATION_20 = 12.60;
-    const INSULATION_30 = 19.60;
+    const INSULATION_30 = 19.80;
 
     var priceInsulation = new Map();
     priceInsulation.set(0, 0);
@@ -157,7 +157,7 @@ const WindowConfigurator = () => {
 
     //GUIDACINGHIA
     var calcBeltGuidePrice = 0;
-    if (beltGuide)
+    if (beltGuide != "nessuno")
       calcBeltGuidePrice = priceBeltGuide.get(beltGuide);
 
     //MANODOPERA
@@ -172,8 +172,8 @@ const WindowConfigurator = () => {
 
 
     event.preventDefault();
-    var totalPrice = calcWoodPrice + calcInsulationPrice + calcBrushPrice + calcBrushExtPrice + calcAcousticPrice + calcPaintingPrice + calcBeltGuidePrice + calcWorkforcePrice;
-    totalPrice = totalPrice * 1.02;
+    const materialPrice = calcWoodPrice + calcInsulationPrice + calcBrushPrice + calcBrushExtPrice + calcAcousticPrice + calcPaintingPrice + calcBeltGuidePrice;
+    var totalPrice = materialPrice * 1.02 + calcWorkforcePrice;
     setTotal(totalPrice);
 
   };
